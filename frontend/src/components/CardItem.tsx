@@ -1,21 +1,21 @@
-import { Data } from '../interfaces'
+import { Task } from '../interfaces'
 
 interface Props {
-  data: Data
+  data: Task
   handleDragging: (dragging: boolean) => void
+  selectedId?: (id: number) => void
 }
 
-export const CardItem = ({ data, handleDragging }: Props) => {
+export const CardItem = ({ data, handleDragging, selectedId }: Props) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text', `${data.id}`)
     handleDragging(true)
   }
-  console.log(data.createdAt)
   const handleDragEnd = () => handleDragging(false)
 
   return (
     <div
-      className='bg-blue-200 flex gap-8 flex-col shadow-md rounded-md p-3 cursor-move border hover:shadow-lg transition-transform transform hover:scale-105'
+      className='bg-blue-200 flex gap-8 flex-col shadow-md rounded-md p-3  cursor-move border hover:shadow-lg transition-transform transform hover:scale-105'
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
@@ -28,12 +28,12 @@ export const CardItem = ({ data, handleDragging }: Props) => {
       </div>
       <div>
         <div>
-          <p>Created at: {new Date(1728590899252).toLocaleDateString()}</p>
+          <p>Created at: {new Date(data.createdAt).toLocaleDateString()}</p>
         </div>
         <div className='flex items-center gap-1 justify-end'>
           <div>
             <button
-              onClick={() => {}}
+              onClick={() => console.log(data.id)}
               className='bg-red-400 text-sm px-2 py-1 rounded-md text-white'
             >
               Delete
@@ -47,6 +47,7 @@ export const CardItem = ({ data, handleDragging }: Props) => {
               Edit
             </button>
           </div>
+
           <div>
             <button
               onClick={() => {}}

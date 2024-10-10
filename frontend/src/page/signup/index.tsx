@@ -1,7 +1,17 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../../firebase'
+import { signInUser } from '../../api/user'
+import { useState } from 'react'
+import { User } from '../../interfaces'
 
 const Signup = () => {
+  const [user, setUser] = useState<User>({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider()
     try {
@@ -12,6 +22,16 @@ const Signup = () => {
       console.error('Sign-in failed:', error)
     }
   }
+  const handleSignUp = async (event: { preventDefault: () => void }) => {
+    event.preventDefault()
+    try {
+      await signInUser(user) // Passing the entire user object to the signInUser function
+      console.log('User signed up successfully')
+    } catch (error) {
+      console.error('Sign-up failed:', error)
+    }
+  }
+
   return (
     <div className='h-[90vh] flex flex-col justify-center items-center gap-5 bg-white'>
       <div className='flex w-full max-w-md items-start justify-start'>
@@ -19,36 +39,51 @@ const Signup = () => {
       </div>
       <div className='w-full max-w-md p-8 space-y-6 bg-white border-2 border-blue-500 rounded-lg shadow-md'>
         <div className='space-y-4'>
-          <div className='space-y-2'>
+          <form onSubmit={handleSignUp} className='space-y-2'>
             <input
               type='text'
               placeholder='First Name'
+              value={user.firstname}
+              onChange={e => setUser({ ...user, firstname: e.target.value })}
               className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
             />
             <input
               type='text'
               placeholder='Last Name'
+              value={user.lastname}
+              onChange={e => setUser({ ...user, lastname: e.target.value })}
               className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
             />
             <input
               type='email'
               placeholder='Email'
+              value={user.email}
+              onChange={e => setUser({ ...user, email: e.target.value })}
               className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
             />
             <input
               type='password'
+              value={user.password}
               placeholder='Password'
+              onChange={e => setUser({ ...user, password: e.target.value })}
               className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
             />
             <input
               type='password'
               placeholder='Confirm Password'
+              value={user.confirmPassword}
+              onChange={e =>
+                setUser({ ...user, confirmPassword: e.target.value })
+              }
               className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
             />
-          </div>
-          <button className='w-full py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded-md'>
-            Signup
-          </button>
+            <button
+              type='submit'
+              className='w-full py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded-md'
+            >
+              Signup
+            </button>
+          </form>
 
           {/* Other options */}
           <div className='text-center'>
