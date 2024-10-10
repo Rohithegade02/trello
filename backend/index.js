@@ -12,7 +12,7 @@ const router = express.Router();
 
 app.use(express.json());
 app.use(cors())
-app.use('/api', UserRouter); // Use '/api' or any other prefix you prefer
+app.use('/user', UserRouter); // Use '/api' or any other prefix you prefer
 
 app.listen(3000, () => {
   console.log('listening on port 3000')

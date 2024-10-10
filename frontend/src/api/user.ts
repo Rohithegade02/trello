@@ -1,6 +1,6 @@
 import { LoginUser, User } from '../interfaces'
 
-const baseUrl = 'http://localhost:3000/api'
+const baseUrl = 'http://localhost:3000/user'
 
 //sign in user
 export async function signInUser(data: User) {
