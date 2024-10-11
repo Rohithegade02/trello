@@ -1,5 +1,3 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '../../firebase'
 import { signInUser } from '../../api/user'
 import { useState } from 'react'
 import { User } from '../../interfaces'
@@ -12,16 +10,7 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
   })
-  const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider()
-    try {
-      const result = await signInWithPopup(auth, provider)
-      const user = result.user
-      console.log('User signed in successfully:', user)
-    } catch (error) {
-      console.error('Sign-in failed:', error)
-    }
-  }
+  const handleGoogleSignIn = async () => {}
   const handleSignUp = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
     try {

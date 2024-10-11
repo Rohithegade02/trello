@@ -14,7 +14,7 @@ export const useDragAndDrop = () => {
   }, [getTaskData])
 
   const handleUpdateList = async (id: string, status: Status) => {
-    console.log(id)
+    // eslint-disable-next-line prefer-const
     let card = taskData.find(item => item._id === id)
 
     if (card && card.status !== status) {

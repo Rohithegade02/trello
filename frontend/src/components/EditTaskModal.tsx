@@ -18,7 +18,6 @@ const EditTaskModal = ({
   const [title, setTitle] = useState<Task['title']>(taskToEdit.title)
 
   useEffect(() => {
-    // Set the initial state based on the taskToEdit prop
     setDescription(taskToEdit.description)
     setStatus(taskToEdit.status)
     setTitle(taskToEdit.title)

@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { Task } from '../interfaces'
+import { formatDateTime } from '../utils'
 
 interface Props {
   data: Task
@@ -22,7 +23,6 @@ const DragAndDropItem = ({
   }
 
   const handleDragEnd = () => handleDragging(false)
-
   return (
     <div
       className='bg-blue-200 flex gap-8 flex-col shadow-md rounded-md p-3  cursor-move border hover:shadow-lg transition-transform transform hover:scale-105'
@@ -38,10 +38,7 @@ const DragAndDropItem = ({
       </div>
       <div>
         <div>
-          <p>
-            Created at:{' '}
-            {new Date(data?.createdAt as string).toLocaleDateString()}
-          </p>
+          <p>Created at: {formatDateTime(data.createdAt)}</p>
         </div>
         <div className='flex items-center gap-1 justify-end'>
           <div>

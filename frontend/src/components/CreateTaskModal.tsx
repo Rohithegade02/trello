@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createTask } from '../api/task'
 import { Task } from '../interfaces'
+import toast, { Toaster } from 'react-hot-toast'
 
 export type Status = 'todo' | 'in-progress' | 'done'
 
@@ -17,6 +18,10 @@ const CreateTaskModal = ({
     e.preventDefault()
     const task = { description, status, title }
     await createTask(task)
+    toast.success('Add New Task to the List')
+    setTimeout(() => {
+      setShowCreateModal(false)
+    }, 2000)
   }
 
   const handleCancel = () => {
@@ -88,6 +93,7 @@ const CreateTaskModal = ({
           </div>
         </form>
       </div>
+      <Toaster />
     </div>
   )
 }
