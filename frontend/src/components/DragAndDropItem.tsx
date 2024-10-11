@@ -1,16 +1,26 @@
+import { memo } from 'react'
 import { Task } from '../interfaces'
 
 interface Props {
   data: Task
   handleDragging: (dragging: boolean) => void
-  selectedId?: (id: number) => void
+  onEditClick: (task: Task) => void
+  onDeleteClick: (task: Task['_id']) => void
+  onViewDetailsClick: (task: Task) => void
 }
 
-export const CardItem = ({ data, handleDragging, selectedId }: Props) => {
+const DragAndDropItem = ({
+  data,
+  handleDragging,
+  onEditClick,
+  onDeleteClick,
+  onViewDetailsClick,
+}: Props) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    e.dataTransfer.setData('text', `${data.id}`)
+    e.dataTransfer.setData('text', `${data._id}`)
     handleDragging(true)
   }
+
   const handleDragEnd = () => handleDragging(false)
 
   return (
@@ -21,19 +31,22 @@ export const CardItem = ({ data, handleDragging, selectedId }: Props) => {
       onDragEnd={handleDragEnd}
     >
       <div>
-        <p className='font-bold text-lg text-black'>Task : {data.id}</p>
+        <p className='font-bold text-lg text-black'>Task: {data.title}</p>
         <p className='text-gray-500 text-base'>
-          Description : {data.description}
+          Description: {data.description}
         </p>
       </div>
       <div>
         <div>
-          <p>Created at: {new Date(data.createdAt).toLocaleDateString()}</p>
+          <p>
+            Created at:{' '}
+            {new Date(data?.createdAt as string).toLocaleDateString()}
+          </p>
         </div>
         <div className='flex items-center gap-1 justify-end'>
           <div>
             <button
-              onClick={() => console.log(data.id)}
+              onClick={() => onDeleteClick(data._id)}
               className='bg-red-400 text-sm px-2 py-1 rounded-md text-white'
             >
               Delete
@@ -41,16 +54,15 @@ export const CardItem = ({ data, handleDragging, selectedId }: Props) => {
           </div>
           <div>
             <button
-              onClick={() => {}}
+              onClick={() => onEditClick(data)}
               className='bg-blue-400 text-sm px-2 py-1 rounded-md text-white'
             >
               Edit
             </button>
           </div>
-
           <div>
             <button
-              onClick={() => {}}
+              onClick={() => onViewDetailsClick(data)}
               className='bg-blue-700 text-sm px-2 py-1 rounded-md text-white'
             >
               View Details
@@ -61,3 +73,5 @@ export const CardItem = ({ data, handleDragging, selectedId }: Props) => {
     </div>
   )
 }
+
+export default memo(DragAndDropItem)

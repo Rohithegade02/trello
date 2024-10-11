@@ -1,18 +1,37 @@
-import { useState } from 'react'
-import { Data, Status } from '../interfaces'
+import { useCallback, useEffect, useState } from 'react'
+import { Status, Task } from '../interfaces'
+import { getAllTask, updateTask } from '../api/task'
 
-export const useDragAndDrop = (initialState: Data[]) => {
+export const useDragAndDrop = () => {
   const [isDragging, setIsDragging] = useState(false)
-  const [listItems, setListItems] = useState<Data[]>(initialState)
+  const [taskData, setTaskData] = useState<Task[]>([])
+  const getTaskData = useCallback(async () => {
+    const res = await getAllTask()
+    setTaskData(res.tasks)
+  }, [])
+  useEffect(() => {
+    getTaskData()
+  }, [getTaskData])
 
-  const handleUpdateList = (id: number, status: Status) => {
-    // eslint-disable-next-line prefer-const
-    let card = listItems.find(item => item.id === id)
+  const handleUpdateList = async (id: string, status: Status) => {
+    console.log(id)
+    let card = taskData.find(item => item._id === id)
 
     if (card && card.status !== status) {
+      // Update the card's status locally
       card.status = status
 
-      setListItems(prev => [card!, ...prev.filter(item => item.id !== id)])
+      // Update the task in the API
+      try {
+        await updateTask(id, { ...card }) // Call the update API
+        setTaskData(prev => [
+          ...prev.filter(item => item._id !== id),
+          { ...card }, // Create a new object for the updated card
+        ])
+      } catch (error) {
+        console.error('Failed to update task:', error)
+        // Optionally handle error (e.g., show a notification)
+      }
     }
   }
 
@@ -20,7 +39,7 @@ export const useDragAndDrop = (initialState: Data[]) => {
 
   return {
     isDragging,
-    listItems,
+    taskData,
     handleUpdateList,
     handleDragging,
   }

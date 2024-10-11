@@ -1,21 +1,22 @@
 import { memo } from 'react'
-import { Data } from '../interfaces'
 import { TrashIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { deleteTask, getAllTask } from '../api/task'
 
 function DeleteModal({
-  showDeleteModal,
   setShowDeleteModal,
-  userId,
+  taskToDelete,
 }: {
-  showDeleteModal: boolean
   setShowDeleteModal: (arg0: boolean) => void
-  userId: Data['id']
+  taskToDelete: string | undefined
 }) {
-  const handleDeleteUser = async () => {}
+  const handleDeleteUser = async () => {
+    await deleteTask(taskToDelete)
+    await getAllTask()
+  }
   return (
     <div className='flex flex-col items-center bg-white p-5 gap-5 w-96 rounded-lg relative'>
       <div>
-        <p className=' font-semibold text-[#3a4e63]'>Delete {userId} User?</p>
+        <p className=' font-semibold text-[#3a4e63]'>Delete User?</p>
       </div>
       <div>
         <p className=' font-semibold text-[#59687b]'>

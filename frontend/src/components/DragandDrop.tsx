@@ -1,21 +1,20 @@
-import { ContainerCards } from './ContainerCards'
+import DragAndDropCards from './DragAndDropCards'
 import { useDragAndDrop } from '../hooks/useDragAndDrop'
 import { Status } from '../interfaces'
-import { data } from '../assets'
 
-const typesHero: Status[] = ['todo', 'in-progress', 'done']
+const statusData: Status[] = ['todo', 'in-progress', 'done']
 
 export const DragAndDrop = () => {
-  const { isDragging, listItems, handleDragging, handleUpdateList } =
-    useDragAndDrop(data)
+  const { isDragging, taskData, handleDragging, handleUpdateList } =
+    useDragAndDrop()
 
   return (
-    <div className='flex justify-between gap-4 p-4'>
-      {typesHero.map(container => (
-        <ContainerCards
-          items={listItems}
-          status={container}
-          key={container}
+    <div className='flex justify-between w-full gap-4 p-4'>
+      {statusData.map(item => (
+        <DragAndDropCards
+          items={taskData}
+          status={item}
+          key={item}
           isDragging={isDragging}
           handleDragging={handleDragging}
           handleUpdateList={handleUpdateList}
