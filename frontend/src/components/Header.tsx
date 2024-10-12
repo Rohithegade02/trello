@@ -1,8 +1,14 @@
+import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const Header = () => {
   const pathName = useLocation()
   const router = useNavigate()
+  const picture = localStorage.getItem('picture')
+  const handleLogout = () => {
+    router('/login')
+    localStorage.removeItem('picture')
+  }
   return (
     <div className='flex justify-between items-center bg-blue-500 px-5 py-2'>
       <div className='text-blue-500'>
@@ -21,18 +27,28 @@ const Header = () => {
           />
         </svg>
       </div>
+
       {pathName.pathname === '/' ? (
-        <div>
-          {' '}
+        <div className='flex items-center gap-5'>
+          {
+            <div>
+              {picture ? (
+                <img
+                  src={picture}
+                  className='h-10 w-10 rounded-full object-contain'
+                />
+              ) : (
+                <UserCircleIcon className='h-10 w-10 rounded-full bg-blue-300' />
+              )}
+            </div>
+          }{' '}
           <button
             className={`${
               pathName.pathname === '/'
                 ? 'text-gray-300 rounded-sm bg-red-500'
                 : 'text-white'
             } p-2 rounded-lg font-semibold`}
-            onClick={() => {
-              router('/login')
-            }}
+            onClick={handleLogout}
           >
             Logout
           </button>

@@ -48,7 +48,7 @@ const HomePage = () => {
             new Date(a.createdAt as string).getTime(),
         )
       default:
-        return tasksToSort // Return tasks as is for 'default'
+        return tasksToSort
     }
   }
   return (
@@ -73,7 +73,7 @@ const HomePage = () => {
           </div>
         </div>
       )}
-      <div className='flex justify-between px-4 py-3 rounded-lg items-center w-full bg-white shadow-lg'>
+      <div className='flex flex-col lg:flex-row justify-between px-4 py-3 rounded-lg items-start gap-4 lg:items-center w-full bg-white shadow-lg'>
         <div className='flex items-center gap-3'>
           <p>Search</p>
           <input
@@ -81,7 +81,7 @@ const HomePage = () => {
             placeholder='Search ....'
             value={inputData}
             onChange={handleChange}
-            className='w-96 px-4 py-2 border rounded-md border-blue-100 focus:ring-2 focus:border-blue-300 outline-none'
+            className='lg:w-96 w-full px-4 py-2 border rounded-md border-blue-100 focus:ring-2 focus:border-blue-300 outline-none'
           />
         </div>
         <div className='flex items-center gap-3'>

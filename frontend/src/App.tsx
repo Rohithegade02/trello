@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './page/login'
 import Header from './components/Header'
 import Signup from './page/signup'
-import HomePage from './page/homePage'
+import HomePage from './page/home'
 
 function App() {
   return (

@@ -51,7 +51,7 @@ const DragAndDropCards = ({
   }
   return (
     <div
-      className={`h-screen w-full border-2 rounded-lg p-4 transition-all ${
+      className={`min-h-[70vh] w-full border-2 rounded-lg p-4 transition-all ${
         isDragging ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
       }`}
       onDrop={handleDrop}

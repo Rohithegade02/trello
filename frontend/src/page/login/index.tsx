@@ -3,7 +3,6 @@ import { loginUser } from '../../api/user'
 import { useGoogleLogin } from '@react-oauth/google'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -60,7 +59,7 @@ const Login = () => {
     }
   }
 
-  const handleGoogleLogin = useGoogleLogin({
+  const handleGoogleSignIn = useGoogleLogin({
     onSuccess: async tokenResponse => {
       console.log(tokenResponse.access_token)
       try {
@@ -75,11 +74,15 @@ const Login = () => {
         )
 
         const userProfile = await res.json()
-        await loginUser({
+        await signInUser({
           email: userProfile.email,
+          firstname: userProfile.given_name,
+          lastname: userProfile.family_name,
+          confirmPassword: '',
           password: '',
+          picture: userProfile.picture,
         })
-        toast.success(`Logged Successfully`)
+        toast.success(`Google Sign in Successfully`)
         setTimeout(() => {
           navigate('/')
         }, 2000)
@@ -142,8 +145,6 @@ const Login = () => {
               </button>
             </div>
           </form>
-
-          {/* Other options */}
           <div className='text-center'>
             <p className='text-sm text-gray-500'>
               Don't have an account?{' '}
@@ -158,7 +159,7 @@ const Login = () => {
 
           <div className='flex w-full items-center justify-center '>
             <button
-              onClick={() => handleGoogleLogin()}
+              onClick={() => handleGoogleSignIn()}
               className='w-[50%] py-2 bg-blue-500 border font-medium text-white border-blue-500 hover:bg-blue-700 rounded-md'
             >
               Login with <span className='font-bold'> Google</span>

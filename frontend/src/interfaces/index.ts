@@ -14,6 +14,7 @@ export interface User {
   email: string
   password: string
   confirmPassword: string
+  picture?: string
 }
 export interface LoginUser {
   email: string

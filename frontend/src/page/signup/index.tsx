@@ -12,6 +12,7 @@ const Signup = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    picture: '',
   })
 
   const [errors, setErrors] = useState<{
@@ -44,8 +45,10 @@ const Signup = () => {
           lastname: userProfile.family_name,
           confirmPassword: '',
           password: '',
+          picture: userProfile.picture,
         })
         toast.success(`Google Sign in Successfully`)
+        localStorage.setItem('picture', userProfile.picture)
         setTimeout(() => {
           navigate('/')
         }, 2000)
@@ -210,12 +213,12 @@ const Signup = () => {
           <div className='text-center'>
             <p className='text-sm text-gray-500'>
               Already have an account?{' '}
-              <a
-                href='login'
+              <p
+                onClick={() => navigate('/login')}
                 className='text-blue-500 font-semibold hover:underline'
               >
                 Login
-              </a>
+              </p>
             </p>
           </div>
 
