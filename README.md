@@ -1,4 +1,4 @@
-Task Management API
+Task Management [TRELLO]
 ===================
 **BACKEND**
 ===================
@@ -31,6 +31,7 @@ This is the backend of a Task Management Application built using **Node.js** and
 
 -   **Create, update, and manage tasks** across different columns.
 -   **Drag-and-drop** functionality for task movement between columns.
+-   **Custom drag-and-drop** logic to enhance app performance and provide a smoother user experience.
 -   **User authentication**: Sign up, log in, and log in via Google.
 -   **User profiles** with avatars.
 -   **Task sorting** and **searching** capabilities.
@@ -41,9 +42,8 @@ This is the backend of a Task Management Application built using **Node.js** and
 🎨 User Interface
 -----------------
 
--   Mock designs are provided to guide the UI development.
--   Ensure the UI is built according to the provided designs.
--   **Drag-and-drop** functionality is a core feature---use any library of your choice (e.g., **react-dnd**, **react-beautiful-dnd**).
+-   Ensured the UI is built according to the provided designs.
+-   **Custom drag-and-drop** logic to enhance app performance and provide a smoother user experience.
 
 🚀 Basic Features
 -----------------
