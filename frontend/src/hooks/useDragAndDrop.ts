@@ -12,7 +12,6 @@ export const useDragAndDrop = () => {
   }, [setTaskData])
   useEffect(() => {
     getTaskData()
-    console.log(getTaskData())
   }, [getTaskData])
 
   const handleUpdateList = async (id: string, status: Status) => {
@@ -20,19 +19,17 @@ export const useDragAndDrop = () => {
     let card = taskData.find(item => item._id === id)
 
     if (card && card.status !== status) {
-      // Update the card's status locally
       card.status = status
 
-      // Update the task in the API
       try {
-        await updateTask(id, { ...card }) // Call the update API
+        await updateTask(id, { ...card })
+
         setTaskData(prev => [
           ...prev.filter(item => item._id !== id),
-          { ...card }, // Create a new object for the updated card
+          { ...card },
         ])
       } catch (error) {
         console.error('Failed to update task:', error)
-        // Optionally handle error (e.g., show a notification)
       }
     }
   }

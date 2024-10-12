@@ -1,7 +1,6 @@
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import { Task } from '../interfaces'
 import { formatDateTime } from '../utils'
-import { useDragAndDrop } from '../hooks/useDragAndDrop'
 
 interface Props {
   data: Task
@@ -22,9 +21,7 @@ const DragAndDropItem = ({
     e.dataTransfer.setData('text', `${data._id}`)
     handleDragging(true)
   }
-  const { taskData } = useDragAndDrop()
   const handleDragEnd = () => handleDragging(false)
-  useEffect(() => {}, [taskData])
   return (
     <div
       className='bg-blue-200 flex gap-8 flex-col shadow-md rounded-md p-3  cursor-move border hover:shadow-lg transition-transform transform hover:scale-105'

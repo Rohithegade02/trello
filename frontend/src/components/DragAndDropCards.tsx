@@ -76,10 +76,8 @@ const DragAndDropCards = ({
         )}
       </div>
 
-      {/* Modal for editing the task */}
       {showEditModal && taskToEdit && (
         <div className='fixed inset-0 z-10 flex items-center justify-center'>
-          {/* Modal backdrop */}
           <div
             className='absolute inset-0 bg-black opacity-50'
             onClick={() => setShowEditModal(false)}
@@ -95,7 +93,6 @@ const DragAndDropCards = ({
       )}
       {showViewModal && taskToView && (
         <div className='fixed inset-0 z-10 flex items-center justify-center'>
-          {/* Modal backdrop */}
           <div
             className='absolute inset-0 bg-black opacity-50'
             onClick={() => setShowViewModal(false)}
@@ -111,7 +108,6 @@ const DragAndDropCards = ({
       )}
       {showDeleteModal && taskToEdit && (
         <div className='fixed inset-0 z-10 flex items-center justify-center'>
-          {/* Modal backdrop */}
           <div
             className='absolute inset-0 bg-black opacity-50'
             onClick={() => setShowDeleteModal(false)}
