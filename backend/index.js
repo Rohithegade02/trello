@@ -3,19 +3,21 @@ import mongoose from "mongoose";
 import cors from 'cors'
 import UserRouter from './routes/user.js';
 import TaskRoutes from './routes/task.js'
+import dotenv from 'dotenv'
 
-mongoose.connect('mongodb+srv://rohit:rohit@cluster0.dp4w3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+const app = express();
+dotenv.config()
+app.use(express.json());
+app.use(cors())
+
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('connected'))
   .catch(err => console.log(err))
 
-const app = express();
-
-app.use(express.json());
-app.use(cors())
 app.use('/user', UserRouter); 
 app.use('/task', TaskRoutes);
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log('listening on port 3000')
 });

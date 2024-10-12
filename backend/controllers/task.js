@@ -1,5 +1,5 @@
 import { Task } from "../models/task.js";
-
+//to create a new task
 export const createTask = async (req, res) => {
     try {
         const { description, status, title } = req.body;
@@ -15,7 +15,7 @@ export const createTask = async (req, res) => {
         res.status(500).json({ success: false, error: 'Server error' });
     }
 };
-
+// to get all task
 export const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.find({});
@@ -26,13 +26,11 @@ export const getAllTasks = async (req, res) => {
     }
 };
 
-import mongoose from 'mongoose';
-
+//to get tas by id
 export const getTaskById = async (req, res) => {
     const taskId = req.params.taskId.trim();
     console.log(taskId);
 
-    // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
         return res.status(400).json({ success: false, message: 'Invalid task ID format' });
     }
@@ -48,12 +46,11 @@ export const getTaskById = async (req, res) => {
         res.status(500).json({ success: false, error: 'Server error' });
     }
 };
-
+// to update task by id
 export const updateTaskById = async (req, res) => {
     const taskId = req.params.taskId.trim();
     console.log(taskId);
 
-    // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
         return res.status(400).json({ success: false, message: 'Invalid task ID format' });
     }
@@ -74,6 +71,7 @@ export const updateTaskById = async (req, res) => {
         res.status(500).json({ success: false, error: 'Server error' });
     }
 };
+// to delete the task by id
 export const deleteTaskById = async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(req.params.id);

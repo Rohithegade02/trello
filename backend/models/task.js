@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Define the Status enum (if you want to have specific statuses)
 const statusEnum = ['todo' , 'in-progress' ,'done'];
 
 const taskSchema = new mongoose.Schema({

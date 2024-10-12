@@ -24,7 +24,39 @@ const Signup = () => {
   }>({})
 
   const handleGoogleSignIn = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
+    onSuccess: async tokenResponse => {
+      console.log(tokenResponse.access_token)
+      try {
+        const res = await fetch(
+          'https://www.googleapis.com/oauth2/v3/userinfo',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          },
+        )
+
+        const userProfile = await res.json()
+        await signInUser({
+          email: userProfile.email,
+          firstname: userProfile.given_name,
+          lastname: userProfile.family_name,
+          confirmPassword: '',
+          password: '',
+        })
+        toast.success(`Google Sign in Successfully`)
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      } catch (error) {
+        console.error('Error fetching user profile:', error)
+        toast.error('Failed to log in with Google.')
+      }
+    },
+    onError: () => {
+      toast.error('Google sign-in failed')
+    },
   })
   const navigate = useNavigate()
   const handleSignUp = async (event: { preventDefault: () => void }) => {

@@ -3,6 +3,7 @@ import { loginUser } from '../../api/user'
 import { useGoogleLogin } from '@react-oauth/google'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -60,15 +61,44 @@ const Login = () => {
   }
 
   const handleGoogleLogin = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
+    onSuccess: async tokenResponse => {
+      console.log(tokenResponse.access_token)
+      try {
+        const res = await fetch(
+          'https://www.googleapis.com/oauth2/v3/userinfo',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          },
+        )
+
+        const userProfile = await res.json()
+        await loginUser({
+          email: userProfile.email,
+          password: '',
+        })
+        toast.success(`Logged Successfully`)
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      } catch (error) {
+        console.error('Error fetching user profile:', error)
+        toast.error('Failed to log in with Google.')
+      }
+    },
+    onError: () => {
+      toast.error('Google sign-in failed')
+    },
   })
 
   return (
-    <div className='h-[90vh] flex flex-col justify-center items-center gap-5  bg-white'>
+    <div className='h-[90vh] flex flex-col justify-center items-center gap-5 bg-white'>
       <div className='flex w-full max-w-md items-start justify-start '>
-        <h1 className='text-3xl  font-bold text-blue-600'>Login</h1>
+        <h1 className='text-3xl font-bold text-blue-600'>Login</h1>
       </div>
-      <div className='w-full max-w-md p-8 space-y-6 bg-white border-2  border-blue-500 rounded-lg shadow-md'>
+      <div className='w-full max-w-md p-8 space-y-6 bg-white border-2 border-blue-500 rounded-lg shadow-md'>
         <div className='space-y-4'>
           <form onSubmit={handleLogin} className='space-y-4'>
             <div className='space-y-2'>
