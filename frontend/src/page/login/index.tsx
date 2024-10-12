@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { loginUser } from '../../api/user'
+import { loginUser, signInUser } from '../../api/user'
 import { useGoogleLogin } from '@react-oauth/google'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
@@ -55,6 +55,7 @@ const Login = () => {
         toast.error(res.message)
       }
     } catch (error) {
+      console.log('Error in Logging', error)
       setErrors({ server: 'Failed to log in. Please check your credentials.' })
     }
   }

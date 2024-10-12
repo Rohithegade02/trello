@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 import { TrashIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { deleteTask, getAllTask } from '../api/task'
 import { useDragAndDrop } from '../hooks/useDragAndDrop'
@@ -11,7 +11,6 @@ function DeleteModal({
   taskToDelete: string | undefined
 }) {
   const { taskData, setTaskData } = useDragAndDrop()
-  const [forceRender, setForceRender] = useState(false) // Force re-render state
 
   const handleDeleteUser = useCallback(async () => {
     try {
@@ -28,7 +27,6 @@ function DeleteModal({
       // Update the taskData state with the latest tasks
       if (updatedTasks?.tasks && Array.isArray(updatedTasks.tasks)) {
         setTaskData(updatedTasks.tasks)
-        setForceRender(prev => !prev) // Toggle to force a re-render
         console.log('TaskData after update:', updatedTasks.tasks)
       } else {
         console.error('Unexpected API response format:', updatedTasks)

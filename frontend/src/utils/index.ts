@@ -2,15 +2,15 @@ import { Task } from '../interfaces'
 
 export function formatDateTime(date: Task['createdAt']) {
   const dateOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    year: 'numeric' as const,
+    month: 'long' as const,
+    day: 'numeric' as const,
   }
 
   const timeOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: '2-digit' as const,
+    minute: '2-digit' as const,
+    second: '2-digit' as const,
     hour12: true,
   }
 
