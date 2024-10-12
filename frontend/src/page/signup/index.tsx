@@ -208,13 +208,14 @@ const Signup = () => {
           {/* Other options */}
           <div className='text-center'>
             <p className='text-sm text-gray-500'>
-              Already have an account?{' '}
-              <p
+              Already have an account?
+              <span
                 onClick={() => navigate('/login')}
-                className='text-blue-500 font-semibold hover:underline'
+                className='text-blue-500 cursor-pointer font-semibold hover:underline'
               >
+                {' '}
                 Login
-              </p>
+              </span>
             </p>
           </div>
 
