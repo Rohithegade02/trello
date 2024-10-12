@@ -5,12 +5,14 @@ import { getAllTask, updateTask } from '../api/task'
 export const useDragAndDrop = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [taskData, setTaskData] = useState<Task[]>([])
+  console.log(taskData)
   const getTaskData = useCallback(async () => {
     const res = await getAllTask()
     setTaskData(res.tasks)
-  }, [])
+  }, [setTaskData])
   useEffect(() => {
     getTaskData()
+    console.log(getTaskData())
   }, [getTaskData])
 
   const handleUpdateList = async (id: string, status: Status) => {
@@ -40,6 +42,7 @@ export const useDragAndDrop = () => {
   return {
     isDragging,
     taskData,
+    setTaskData,
     handleUpdateList,
     handleDragging,
   }

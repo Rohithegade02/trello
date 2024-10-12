@@ -23,7 +23,6 @@ const DragAndDropCards = ({
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showViewModal, setShowViewModal] = useState(false)
-
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
   const [taskToView, setTaskToView] = useState<Task | null>(null)
   const [taskToDelete, setTaskToDelete] = useState<Task['_id']>('')

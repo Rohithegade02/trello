@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createTask } from '../api/task'
+import { createTask, getAllTask } from '../api/task'
 import { Task } from '../interfaces'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -19,6 +19,7 @@ const CreateTaskModal = ({
     const task = { description, status, title }
     await createTask(task)
     toast.success('Add New Task to the List')
+    getAllTask()
     setTimeout(() => {
       setShowCreateModal(false)
     }, 2000)

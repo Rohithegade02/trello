@@ -1,6 +1,9 @@
 import { signInUser } from '../../api/user'
 import { useState } from 'react'
 import { User } from '../../interfaces'
+import { useGoogleLogin } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 
 const Signup = () => {
   const [user, setUser] = useState<User>({
@@ -10,14 +13,77 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
   })
-  const handleGoogleSignIn = async () => {}
+
+  const [errors, setErrors] = useState<{
+    firstname?: string
+    lastname?: string
+    email?: string
+    password?: string
+    confirmPassword?: string
+    server?: string
+  }>({})
+
+  const handleGoogleSignIn = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  })
+  const navigate = useNavigate()
   const handleSignUp = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
+
+    // Reset previous errors
+    setErrors({})
+
+    // Client-side validation
+    let validationErrors = {}
+    if (!user.firstname) {
+      validationErrors = {
+        ...validationErrors,
+        firstname: 'First Name is required',
+      }
+    }
+    if (!user.lastname) {
+      validationErrors = {
+        ...validationErrors,
+        lastname: 'Last Name is required',
+      }
+    }
+    if (!user.email) {
+      validationErrors = { ...validationErrors, email: 'Email is required' }
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      validationErrors = { ...validationErrors, email: 'Invalid email format' }
+    }
+    if (!user.password) {
+      validationErrors = {
+        ...validationErrors,
+        password: 'Password is required',
+      }
+    }
+    if (user.password !== user.confirmPassword) {
+      validationErrors = {
+        ...validationErrors,
+        confirmPassword: 'Passwords do not match',
+      }
+    }
+
+    // If there are validation errors, set them and return early
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      return
+    }
+
+    // Attempt server-side signup
     try {
-      await signInUser(user) // Passing the entire user object to the signInUser function
-      console.log('User signed up successfully')
+      const res = await signInUser(user) // Passing the entire user object to the signInUser function
+      if (res.success) {
+        toast.success(res.message)
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      } else {
+        toast.error(res.message)
+      }
     } catch (error) {
-      console.error('Sign-up failed:', error)
+      setErrors({ server: 'Sign-up failed. Please try again later.' })
     }
   }
 
@@ -34,29 +100,53 @@ const Signup = () => {
               placeholder='First Name'
               value={user.firstname}
               onChange={e => setUser({ ...user, firstname: e.target.value })}
-              className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                errors.firstname ? 'border-red-500' : 'border-blue-300'
+              }`}
             />
+            {errors.firstname && (
+              <p className='text-red-500 text-sm'>{errors.firstname}</p>
+            )}
+
             <input
               type='text'
               placeholder='Last Name'
               value={user.lastname}
               onChange={e => setUser({ ...user, lastname: e.target.value })}
-              className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                errors.lastname ? 'border-red-500' : 'border-blue-300'
+              }`}
             />
+            {errors.lastname && (
+              <p className='text-red-500 text-sm'>{errors.lastname}</p>
+            )}
+
             <input
               type='email'
               placeholder='Email'
               value={user.email}
               onChange={e => setUser({ ...user, email: e.target.value })}
-              className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                errors.email ? 'border-red-500' : 'border-blue-300'
+              }`}
             />
+            {errors.email && (
+              <p className='text-red-500 text-sm'>{errors.email}</p>
+            )}
+
             <input
               type='password'
-              value={user.password}
               placeholder='Password'
+              value={user.password}
               onChange={e => setUser({ ...user, password: e.target.value })}
-              className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                errors.password ? 'border-red-500' : 'border-blue-300'
+              }`}
             />
+            {errors.password && (
+              <p className='text-red-500 text-sm'>{errors.password}</p>
+            )}
+
             <input
               type='password'
               placeholder='Confirm Password'
@@ -64,8 +154,18 @@ const Signup = () => {
               onChange={e =>
                 setUser({ ...user, confirmPassword: e.target.value })
               }
-              className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                errors.confirmPassword ? 'border-red-500' : 'border-blue-300'
+              }`}
             />
+            {errors.confirmPassword && (
+              <p className='text-red-500 text-sm'>{errors.confirmPassword}</p>
+            )}
+
+            {errors.server && (
+              <p className='text-red-500 text-sm'>{errors.server}</p>
+            )}
+
             <button
               type='submit'
               className='w-full py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded-md'
@@ -89,7 +189,7 @@ const Signup = () => {
 
           <div className='flex w-full items-center justify-center'>
             <button
-              onClick={handleGoogleSignIn}
+              onClick={() => handleGoogleSignIn()}
               className='w-[50%] py-2 bg-blue-500 border font-medium text-white border-blue-500 hover:bg-blue-700 rounded-md'
             >
               Signup with <span className='font-bold'> Google</span>
@@ -97,6 +197,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }

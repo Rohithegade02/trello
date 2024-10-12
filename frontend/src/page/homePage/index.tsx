@@ -38,12 +38,14 @@ const HomePage = () => {
       case 'oldest':
         return [...tasksToSort].sort(
           (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+            new Date(a.createdAt as string).getTime() -
+            new Date(b.createdAt as string).getTime(),
         )
       case 'recent':
         return [...tasksToSort].sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.createdAt as string).getTime() -
+            new Date(a.createdAt as string).getTime(),
         )
       default:
         return tasksToSort // Return tasks as is for 'default'

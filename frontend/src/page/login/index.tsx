@@ -1,24 +1,71 @@
 import { useState } from 'react'
 import { loginUser } from '../../api/user'
+import { useGoogleLogin } from '@react-oauth/google'
+import toast, { Toaster } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [user, setUser] = useState({
     email: '',
     password: '',
   })
+  const [errors, setErrors] = useState<{
+    email?: string
+    password?: string
+    server?: string
+  }>({})
+  const navigate = useNavigate()
+
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
+
+    // Reset previous errors
+    setErrors({})
+
+    // Client-side validation
+    let validationErrors = {}
+    if (!user.email) {
+      validationErrors = { ...validationErrors, email: 'Email is required' }
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      validationErrors = { ...validationErrors, email: 'Invalid email format' }
+    }
+
+    if (!user.password) {
+      validationErrors = {
+        ...validationErrors,
+        password: 'Password is required',
+      }
+    }
+
+    // If there are validation errors, set them and return early
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      return
+    }
+
+    // Attempt server-side login
     try {
-      await loginUser(user) // Passing the entire user object to the signInUser function
-      console.log('User signed up successfully')
+      const res = await loginUser(user)
+      if (res.success) {
+        toast.success(res.message)
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      } else {
+        toast.error(res.message)
+      }
     } catch (error) {
-      console.error('Sign-up failed:', error)
+      setErrors({ server: 'Failed to log in. Please check your credentials.' })
     }
   }
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  })
+
   return (
     <div className='h-[90vh] flex flex-col justify-center items-center gap-5  bg-white'>
       <div className='flex w-full max-w-md items-start justify-start '>
-        {' '}
         <h1 className='text-3xl  font-bold text-blue-600'>Login</h1>
       </div>
       <div className='w-full max-w-md p-8 space-y-6 bg-white border-2  border-blue-500 rounded-lg shadow-md'>
@@ -30,19 +77,36 @@ const Login = () => {
                 placeholder='Email'
                 value={user.email}
                 onChange={e => setUser({ ...user, email: e.target.value })}
-                className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                  errors.email ? 'border-red-500' : 'border-blue-300'
+                }`}
               />
+              {errors.email && (
+                <p className='text-red-500 text-sm'>{errors.email}</p>
+              )}
+
               <input
                 type='password'
                 placeholder='Password'
+                value={user.password}
                 onChange={e => setUser({ ...user, password: e.target.value })}
-                className='w-full px-4 py-2 border rounded-md border-blue-300 focus:ring-2 focus:ring-blue-500 outline-none'
+                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${
+                  errors.password ? 'border-red-500' : 'border-blue-300'
+                }`}
               />
+              {errors.password && (
+                <p className='text-red-500 text-sm'>{errors.password}</p>
+              )}
             </div>
+
+            {errors.server && (
+              <p className='text-red-500 text-sm'>{errors.server}</p>
+            )}
+
             <div>
               <button
                 type='submit'
-                className='w-full py-2  font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-md'
+                className='w-full py-2 font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-md'
               >
                 Login
               </button>
@@ -63,12 +127,16 @@ const Login = () => {
           </div>
 
           <div className='flex w-full items-center justify-center '>
-            <button className='w-[50%]  py-2 bg-blue-500  border font-medium text-white border-blue-500 hover:bg-blue-700 rounded-md'>
+            <button
+              onClick={() => handleGoogleLogin()}
+              className='w-[50%] py-2 bg-blue-500 border font-medium text-white border-blue-500 hover:bg-blue-700 rounded-md'
+            >
               Login with <span className='font-bold'> Google</span>
             </button>
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }
