@@ -5,7 +5,7 @@ import { getAllTask, updateTask } from '../api/task'
 export const useDragAndDrop = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [taskData, setTaskData] = useState<Task[]>([])
-  console.log(taskData)
+
   const getTaskData = useCallback(async () => {
     const res = await getAllTask()
     setTaskData(res.tasks)
