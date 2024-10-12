@@ -7,13 +7,14 @@ const statusData: Status[] = ['todo', 'in-progress', 'done']
 export const DragAndDrop = ({ filteredTasks }: { filteredTasks: Task[] }) => {
   const { isDragging, taskData, handleDragging, handleUpdateList } =
     useDragAndDrop()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const tasksToShow = filteredTasks.length > 0 ? filteredTasks : taskData
 
   return (
     <div className='flex flex-col lg:flex-row justify-between w-full gap-4 p-4'>
       {statusData.map(item => (
         <DragAndDropCards
-          items={tasksToShow}
+          items={taskData}
           status={item}
           key={item}
           isDragging={isDragging}
