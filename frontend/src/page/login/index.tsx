@@ -3,6 +3,7 @@ import { loginUser, signInUser } from '../../api/user'
 import { useGoogleLogin } from '@react-oauth/google'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -15,6 +16,7 @@ const Login = () => {
     server?: string
   }>({})
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
@@ -44,6 +46,7 @@ const Login = () => {
       const res = await loginUser(user)
       if (res.success) {
         toast.success(res.message)
+        login()
         setTimeout(() => {
           navigate('/')
         }, 2000)

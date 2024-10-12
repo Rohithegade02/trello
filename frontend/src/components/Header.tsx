@@ -1,13 +1,17 @@
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const Header = () => {
   const pathName = useLocation()
   const router = useNavigate()
   const picture = localStorage.getItem('picture')
+  const { logout } = useAuth()
   const handleLogout = () => {
     router('/login')
     localStorage.removeItem('picture')
+    localStorage.removeItem('token')
+    logout()
   }
   return (
     <div className='flex justify-between items-center bg-blue-500 px-5 py-2'>

@@ -4,8 +4,10 @@ import { User } from '../../interfaces'
 import { useGoogleLogin } from '@react-oauth/google'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext'
 
 const Signup = () => {
+  const { signUp } = useAuth()
   const [user, setUser] = useState<User>({
     firstname: '',
     lastname: '',
@@ -47,6 +49,7 @@ const Signup = () => {
           picture: userProfile.picture,
         })
         toast.success(`Google Sign in Successfully`)
+        signUp()
         localStorage.setItem('picture', userProfile.picture)
         setTimeout(() => {
           navigate('/')
@@ -106,6 +109,7 @@ const Signup = () => {
       const res = await signInUser(user)
       if (res.success) {
         toast.success(res.message)
+        signUp()
         setTimeout(() => {
           navigate('/')
         }, 2000)

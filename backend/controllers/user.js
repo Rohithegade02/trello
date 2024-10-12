@@ -28,7 +28,7 @@ export const createNewUser = async (req, res) => {
             picture
         });
 
-        res.status(201).json({ success: true, user: newUser, message: 'User created successfully' });
+        res.status(201).json({ success: true,token:Date.now(), user: newUser, message: 'User created successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, error: 'Server error' });
@@ -50,7 +50,7 @@ export const loginUser = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(400).json({ success: false, message: 'Invalid email or password' });
         }
-        res.status(201).json({ success: true,  message: 'Login successfully' });
+        res.status(201).json({ success: true, token:Date.now(), message: 'Login successfully' });
 
     } catch (error) {
         console.error(error);

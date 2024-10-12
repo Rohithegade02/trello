@@ -13,7 +13,7 @@ export async function signInUser(data: User) {
       body: JSON.stringify(data),
     })
     const result = await response.json()
-    // localStorage.setItem('token', result.token)
+    localStorage.setItem('token', result.token)
     return result
   } catch (error) {
     console.error('Error:', error)
@@ -32,6 +32,8 @@ export async function loginUser(data: LoginUser) {
     })
 
     const result = await response.json()
+    localStorage.setItem('token', result.token)
+
     return result
   } catch (error) {
     console.error('Error:', error)
