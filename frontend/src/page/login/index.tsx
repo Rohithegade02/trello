@@ -19,10 +19,8 @@ const Login = () => {
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    // Reset previous errors
     setErrors({})
 
-    // Client-side validation
     let validationErrors = {}
     if (!user.email) {
       validationErrors = { ...validationErrors, email: 'Email is required' }
@@ -37,13 +35,11 @@ const Login = () => {
       }
     }
 
-    // If there are validation errors, set them and return early
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
     }
 
-    // Attempt server-side login
     try {
       const res = await loginUser(user)
       if (res.success) {
@@ -62,7 +58,6 @@ const Login = () => {
 
   const handleGoogleSignIn = useGoogleLogin({
     onSuccess: async tokenResponse => {
-      console.log(tokenResponse.access_token)
       try {
         const res = await fetch(
           'https://www.googleapis.com/oauth2/v3/userinfo',

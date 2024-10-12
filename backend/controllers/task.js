@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 export const createTask = async (req, res) => {
     try {
         const { description, status, title } = req.body;
-        console.log(req.body)
         const newTask = await Task.create({
             title,
             description,
@@ -30,7 +29,6 @@ export const getAllTasks = async (req, res) => {
 //to get tas by id
 export const getTaskById = async (req, res) => {
     const taskId = req.params.taskId.trim();
-    console.log(taskId);
 
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
         return res.status(400).json({ success: false, message: 'Invalid task ID format' });
@@ -50,7 +48,6 @@ export const getTaskById = async (req, res) => {
 // to update task by id
 export const updateTaskById = async (req, res) => {
     const taskId = req.params.taskId.trim();
-    console.log(taskId);
 
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
         return res.status(400).json({ success: false, message: 'Invalid task ID format' });

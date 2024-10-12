@@ -19,5 +19,5 @@ app.use('/task', TaskRoutes);
 
 
 app.listen(process.env.PORT, () => {
-  console.log('listening on port 3000')
+  console.log(`listening on port ${process.env.PORT}`)
 });

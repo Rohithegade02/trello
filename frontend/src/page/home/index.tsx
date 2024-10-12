@@ -10,7 +10,7 @@ const HomePage = () => {
   const debounceTimeoutRef = useRef<number | null>(null)
   const [inputData, setInputData] = useState<string>('')
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
-  const [sortOption, setSortOption] = useState<string>('default') //
+  const [sortOption, setSortOption] = useState<string>('default')
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = e.target.value.toLowerCase()
@@ -24,12 +24,12 @@ const HomePage = () => {
         const filtered = taskData.filter(
           task =>
             task.title.toLowerCase().includes(searchValue) ||
-            task.description.toLowerCase().includes(searchValue), // Include description in search if applicable
+            task.description.toLowerCase().includes(searchValue),
         )
-        setFilteredTasks(filtered) // Update the filtered tasks
+        setFilteredTasks(filtered)
       }, 600)
     },
-    [taskData], // Add taskData to dependencies
+    [taskData],
   )
   const sortedTasks = () => {
     const tasksToSort = filteredTasks.length > 0 ? filteredTasks : taskData

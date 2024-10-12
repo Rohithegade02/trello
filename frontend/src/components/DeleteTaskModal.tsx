@@ -14,25 +14,16 @@ function DeleteModal({
 
   const handleDeleteUser = useCallback(async () => {
     try {
-      console.log('Deleting task with ID:', taskToDelete)
-
-      // Perform the delete operation
       await deleteTask(taskToDelete)
-      console.log('Task deleted successfully')
 
-      // Fetch updated tasks
       const updatedTasks = await getAllTask()
-      console.log('Updated tasks fetched:', updatedTasks)
 
-      // Update the taskData state with the latest tasks
       if (updatedTasks?.tasks && Array.isArray(updatedTasks.tasks)) {
         setTaskData(updatedTasks.tasks)
-        console.log('TaskData after update:', updatedTasks.tasks)
       } else {
         console.error('Unexpected API response format:', updatedTasks)
       }
 
-      // Now close the modal after successful deletion
       setShowDeleteModal(false)
     } catch (error) {
       console.error('Failed to delete the task:', error)

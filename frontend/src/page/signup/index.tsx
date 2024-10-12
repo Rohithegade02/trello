@@ -26,7 +26,6 @@ const Signup = () => {
 
   const handleGoogleSignIn = useGoogleLogin({
     onSuccess: async tokenResponse => {
-      console.log(tokenResponse.access_token)
       try {
         const res = await fetch(
           'https://www.googleapis.com/oauth2/v3/userinfo',
@@ -65,10 +64,8 @@ const Signup = () => {
   const handleSignUp = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    // Reset previous errors
     setErrors({})
 
-    // Client-side validation
     let validationErrors = {}
     if (!user.firstname) {
       validationErrors = {
@@ -100,15 +97,13 @@ const Signup = () => {
       }
     }
 
-    // If there are validation errors, set them and return early
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
     }
 
-    // Attempt server-side signup
     try {
-      const res = await signInUser(user) // Passing the entire user object to the signInUser function
+      const res = await signInUser(user)
       if (res.success) {
         toast.success(res.message)
         setTimeout(() => {
@@ -118,6 +113,7 @@ const Signup = () => {
         toast.error(res.message)
       }
     } catch (error) {
+      console.log(error)
       setErrors({ server: 'Sign-up failed. Please try again later.' })
     }
   }
